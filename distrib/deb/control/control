@@ -7,4 +7,4 @@ Architecture: [[deb.architecture]]
 Maintainer: Eclipse Kura Developers <kura-dev@eclipse.org>
 Description: [[summary]]
   [[long.description]]
-Homepage: https://eclipse-kura.github.io/kura/docs-develop/core-services/position-service/
+Homepage: https://eclipse-kura.github.io/kura/latest/core-services/position-service/
