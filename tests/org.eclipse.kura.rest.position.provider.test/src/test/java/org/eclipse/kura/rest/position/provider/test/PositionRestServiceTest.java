@@ -22,8 +22,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.ws.rs.WebApplicationException;
-
 import org.eclipse.kura.internal.rest.position.PositionRestService;
 import org.eclipse.kura.position.GNSSType;
 import org.eclipse.kura.position.PositionService;
@@ -243,6 +241,6 @@ public class PositionRestServiceTest {
     }
 
     private void thenExceptionIsThrown() {
-        assertEquals(WebApplicationException.class, testException.getClass());
+        assertEquals(RuntimeException.class, testException.getClass());
     }
 }
