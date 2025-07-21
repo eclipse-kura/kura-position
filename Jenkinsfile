@@ -1,9 +1,3 @@
-podTemplate(inheritFrom: 'basic', yaml: '''
-spec:
-  containers:
-  - name: "jnlp"
-''')
-{
     node {
         properties([
             disableConcurrentBuilds(abortPrevious: true),
