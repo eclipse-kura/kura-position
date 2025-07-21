@@ -1,0 +1,14 @@
+.DS_Store*
+*~
+classes
+target
+RemoteSystemsTempFiles
+.metadata
+.recommenders
+.sonarlint
+.classpath
+.project
+.settings
+.vscode
+javaConfig.json
+bundles/org.eclipse.kura.linux.position/lib/
