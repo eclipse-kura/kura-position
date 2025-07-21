@@ -3,6 +3,7 @@ Version: [[version]]-[[package.revision]]
 Section: admin
 Priority: optional
 Depends: kura-core (>= 6.0.0~), kura-core(<< 7.0.0~)
+Suggests: kura-networking (>= 3.0.0~), kura-networking(<< 4.0.0~)
 Architecture: [[deb.architecture]]
 Maintainer: Eclipse Kura Developers <kura-dev@eclipse.org>
 Description: [[summary]]

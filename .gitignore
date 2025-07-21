@@ -11,3 +11,4 @@ RemoteSystemsTempFiles
 .settings
 .vscode
 javaConfig.json
+bundles/org.eclipse.kura.linux.position/lib/
