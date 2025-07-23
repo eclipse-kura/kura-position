@@ -49,7 +49,7 @@ node {
                                     -Dsonar.java.binaries='target/' \
                                     -Dsonar.core.codeCoveragePlugin=jacoco \
                                     -Dsonar.projectKey=eclipse-kura_kura-position \
-                                    -Dsonar.exclusions=test/**/*.java
+                                    -Dsonar.exclusions=tests/**/*.java
                             '''
                         }
                     }
