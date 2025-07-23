@@ -43,7 +43,7 @@ node {
                                     -Dsonar.organization=eclipse-kura \
                                     -Dsonar.host.url=${SONAR_HOST_URL} \
                                     -Dsonar.token=${SONARCLOUD_TOKEN} \
-                                    -Dsonar.pullrequest.branch=${BRANCH_NAME} \
+                                    -Dsonar.pullrequest.branch=${CHANGE_BRANCH} \
                                     -Dsonar.pullrequest.base=${CHANGE_TARGET} \
                                     -Dsonar.pullrequest.key=${CHANGE_ID}\
                                     -Dsonar.java.binaries='target/' \
