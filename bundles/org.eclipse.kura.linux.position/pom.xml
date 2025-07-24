@@ -30,9 +30,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>de.taimos</groupId>
+			<groupId>com.eurotech</groupId>
 			<artifactId>gpsd4java</artifactId>
-			<version>1.10</version>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 
@@ -46,29 +46,6 @@
 			<plugin>
 				<groupId>biz.aQute.bnd</groupId>
 				<artifactId>bnd-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>get-bundles-to-distrib</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>de.taimos</groupId>
-									<artifactId>gpsd4java</artifactId>
-									<version>1.10</version>
-									<type>jar</type>
-									<outputDirectory>./lib</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

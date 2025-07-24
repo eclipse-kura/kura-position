@@ -33,9 +33,9 @@
                     <type>pom</type>
                 </dependency>
                 <dependency>
-                    <groupId>de.taimos</groupId>
+                    <groupId>com.eurotech</groupId>
                     <artifactId>gpsd4java</artifactId>
-                    <version>1.10</version>
+                    <version>1.0.0</version>
                 </dependency>
             </dependencies>
 
