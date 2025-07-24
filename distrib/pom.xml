@@ -41,6 +41,11 @@
             <artifactId>org.eclipse.kura.rest.position.provider</artifactId>
             <version>2.0.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.eurotech</groupId>
+            <artifactId>gpsd4java</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <!-- Change this if your org is different -->
@@ -59,10 +64,12 @@
         -->
         <position.addon.installation.dir>/opt/eclipse/kura/plugins/4</position.addon.installation.dir>
         <rest.position.addon.installation.dir>/opt/eclipse/kura/plugins/4s</rest.position.addon.installation.dir>
+        <gpsd4java.installation.dir>/opt/eclipse/kura/plugins/3</gpsd4java.installation.dir>
 
         <!-- name of the JAR produced in bundles/target -->
         <position.jar.name>org.eclipse.kura.linux.position-2.0.0-SNAPSHOT.jar</position.jar.name>
         <rest.position.jar.name>org.eclipse.kura.rest.position.provider-2.0.0-SNAPSHOT.jar</rest.position.jar.name>
+        <gpsd4java.jar.name>gpsd4java-1.0.0.jar</gpsd4java.jar.name>
 
         <!--
             Available DEB architectures:
@@ -252,6 +259,20 @@
                                         <filemode>600</filemode>
                                     </mapper>
                                 </data>
+
+                                <data>
+                                    <src>
+                                        ${project.build.directory}/plugins/${gpsd4java.jar.name}</src>
+                                    <type>file</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>${gpsd4java.installation.dir}</prefix>
+                                        <user>kurad</user>
+                                        <group>kurad</group>
+                                        <filemode>600</filemode>
+                                    </mapper>
+                                </data>
+
                             </dataSet>
                         </configuration>
                     </execution>
