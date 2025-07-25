@@ -55,11 +55,6 @@
                 <artifactId>org.eclipse.kura.emulator.position</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.eurotech</groupId>
-                <artifactId>gpsd4java</artifactId>
-                <version>1.0.0</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -75,10 +70,6 @@
         <dependency>
             <groupId>org.eclipse.kura</groupId>
             <artifactId>org.eclipse.kura.emulator.position</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.eurotech</groupId>
-            <artifactId>gpsd4java</artifactId>
         </dependency>
     </dependencies>
 
