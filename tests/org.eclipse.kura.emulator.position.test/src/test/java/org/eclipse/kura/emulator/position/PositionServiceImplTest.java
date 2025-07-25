@@ -130,7 +130,8 @@ public class PositionServiceImplTest {
     private Bundle initBundleMock() throws MalformedURLException {
         Bundle bMock = mock(Bundle.class);
         String name = "boston.gpx";
-        URL url = new URL("file:../../emulator/org.eclipse.kura.emulator.position/src/main/resources/" + name);
+        String resourcePath = System.getProperty("user.dir") + "/../../bundles/org.eclipse.kura.emulator.position/src/main/resources/" + name;
+        URL url = new URL("file:" + resourcePath);
         when(bMock.getResource(name)).thenReturn(url);
         return bMock;
     }
