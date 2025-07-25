@@ -401,6 +401,7 @@
     <modules>
         <module>org.eclipse.kura.linux.position.test</module>
         <module>org.eclipse.kura.rest.position.provider.test</module>
+        <module>org.eclipse.kura.emulator.position.test</module>
     </modules>
 
 </project>

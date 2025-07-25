@@ -39,7 +39,7 @@
     </distributionManagement>
 
     <dependencyManagement>
-        <dependencies>        <!-- Demo bundles -->
+        <dependencies>
             <dependency>
                 <groupId>org.eclipse.kura</groupId>
                 <artifactId>org.eclipse.kura.linux.position</artifactId>
@@ -49,6 +49,16 @@
                 <groupId>org.eclipse.kura</groupId>
                 <artifactId>org.eclipse.kura.rest.position.provider</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.kura</groupId>
+                <artifactId>org.eclipse.kura.emulator.position</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eurotech</groupId>
+                <artifactId>gpsd4java</artifactId>
+                <version>1.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -61,6 +71,14 @@
         <dependency>
             <groupId>org.eclipse.kura</groupId>
             <artifactId>org.eclipse.kura.rest.position.provider</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.kura</groupId>
+            <artifactId>org.eclipse.kura.emulator.position</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.eurotech</groupId>
+            <artifactId>gpsd4java</artifactId>
         </dependency>
     </dependencies>
 

@@ -347,5 +347,6 @@
     <modules>
         <module>org.eclipse.kura.linux.position</module>
         <module>org.eclipse.kura.rest.position.provider</module>
+        <module>org.eclipse.kura.emulator.position</module>
     </modules>
 </project>
