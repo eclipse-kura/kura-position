@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +38,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.event.EventAdmin;
 import org.osgi.util.position.Position;
+import org.xml.sax.helpers.AttributesImpl;
 
 public class PositionServiceImplTest {
 
@@ -78,6 +80,7 @@ public class PositionServiceImplTest {
 
         Position currentPosition = svc.getPosition();
         NmeaPosition currentNmeaPosition = svc.getNmeaPosition();
+        LocalDateTime currentTime = svc.getDateTime();
 
         double eps = 0.0000001;
         assertEquals(0.7370467, currentPosition.getLatitude().getValue(), eps);
@@ -88,6 +91,8 @@ public class PositionServiceImplTest {
         assertEquals(42.229664, currentNmeaPosition.getLatitude(), eps);
         assertEquals(-71.518378, currentNmeaPosition.getLongitude(), eps);
         assertEquals(149.6, currentNmeaPosition.getAltitude(), eps);
+
+        assertEquals(2025, currentTime.getYear());
     }
 
     @Test
@@ -119,6 +124,28 @@ public class PositionServiceImplTest {
         assertFalse((boolean) TestUtil.getFieldValue(svc, "useGpsd"));
     }
 
+    @Test
+    public void testGpsXmlHandlerCharactersWithOddData() {
+
+        GpsXmlHandler handler = new GpsXmlHandler();
+
+        AttributesImpl attributes = new AttributesImpl();
+        attributes.addAttribute("", "lat", "lat", "CDATA", "42.123");
+        attributes.addAttribute("", "lon", "lon", "CDATA", "-71.456");
+
+        handler.startElement("", "", "trkpt", attributes);
+
+        char[] oddData = "unexpected content directly in trkpt".toCharArray();
+
+        handler.characters(oddData, 0, oddData.length);
+
+        GpsPoint[] points = handler.getGpsPoints();
+
+        assertEquals("No GPS points should be created from odd data", 0, points.length);
+
+        handler.endElement("", "", "trkpt");
+    }
+
     private ComponentContext initComponentContextMock(Bundle bMock) {
         BundleContext bcMock = mock(BundleContext.class);
         when(bcMock.getBundle()).thenReturn(bMock);
@@ -130,7 +157,8 @@ public class PositionServiceImplTest {
     private Bundle initBundleMock() throws MalformedURLException {
         Bundle bMock = mock(Bundle.class);
         String name = "boston.gpx";
-        String resourcePath = System.getProperty("user.dir") + "/../../bundles/org.eclipse.kura.emulator.position/src/main/resources/" + name;
+        String resourcePath = System.getProperty("user.dir")
+                + "/../../bundles/org.eclipse.kura.emulator.position/src/main/resources/" + name;
         URL url = new URL("file:" + resourcePath);
         when(bMock.getResource(name)).thenReturn(url);
         return bMock;
