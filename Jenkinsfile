@@ -35,23 +35,21 @@ node {
         timeout(time: 2, unit: 'HOURS') {
             dir("kura-position") {
                 withMaven(jdk: 'temurin-jdk17-latest', maven: 'apache-maven-3.9.6', options: [artifactsPublisher(disabled: true)]) {
-                    withCredentials([string(credentialsId: 'sonarcloud-token-kura-position', variable: 'SONARCLOUD_TOKEN')]) {
-                        withSonarQubeEnv {
-                            sh '''
-                                mvn sonar:sonar \
-                                    -Dmaven.test.failure.ignore=true \
-                                    -Dsonar.organization=eclipse-kura \
-                                    -Dsonar.host.url=${SONAR_HOST_URL} \
-                                    -Dsonar.token=${SONARCLOUD_TOKEN} \
-                                    -Dsonar.pullrequest.branch=${CHANGE_BRANCH} \
-                                    -Dsonar.pullrequest.base=${CHANGE_TARGET} \
-                                    -Dsonar.pullrequest.key=${CHANGE_ID}\
-                                    -Dsonar.java.binaries='target/' \
-                                    -Dsonar.core.codeCoveragePlugin=jacoco \
-                                    -Dsonar.projectKey=eclipse-kura_kura-position \
-                                    -Dsonar.exclusions=tests/**/*.java
-                            '''
-                        }
+                    withSonarQubeEnv (installationName: 'SonarCloud.io', credentialsId: 'sonarcloud-token-kura-position') {
+                        sh '''
+                            mvn sonar:sonar \
+                                -Dmaven.test.failure.ignore=true \
+                                -Dsonar.organization=eclipse-kura \
+                                -Dsonar.host.url=${SONAR_HOST_URL} \
+                                -Dsonar.token=${SONARCLOUD_TOKEN} \
+                                -Dsonar.pullrequest.branch=${CHANGE_BRANCH} \
+                                -Dsonar.pullrequest.base=${CHANGE_TARGET} \
+                                -Dsonar.pullrequest.key=${CHANGE_ID}\
+                                -Dsonar.java.binaries='target/' \
+                                -Dsonar.core.codeCoveragePlugin=jacoco \
+                                -Dsonar.projectKey=eclipse-kura_kura-position \
+                                -Dsonar.exclusions=tests/**/*.java
+                        '''
                     }
                 }
             }
