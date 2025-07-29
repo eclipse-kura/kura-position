@@ -62,7 +62,7 @@
             n => bundle.name:@n;
             ns => bundle.name:@n:start;
         -->
-        <position.addon.installation.dir>/opt/eclipse/kura/plugins/4</position.addon.installation.dir>
+        <position.addon.installation.dir>/opt/eclipse/kura/plugins/4s</position.addon.installation.dir>
         <rest.position.addon.installation.dir>/opt/eclipse/kura/plugins/4s</rest.position.addon.installation.dir>
         <gpsd4java.installation.dir>/opt/eclipse/kura/plugins/3</gpsd4java.installation.dir>
 
