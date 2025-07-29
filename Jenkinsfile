@@ -64,6 +64,7 @@ stage('quality-gate') {
     // Sonar quality gate
     timeout(time: 30, unit: 'MINUTES') {
         withCredentials([string(credentialsId: 'sonarcloud-token-kura-position', variable: 'SONARCLOUD_TOKEN')]) {
+            sleep(30) // Wait for Sonar to complete its scan
             def qg = waitForQualityGate()
             if (qg.status != 'OK') {
                 error "Pipeline aborted due to sonar quality gate failure: ${qg.status}"
