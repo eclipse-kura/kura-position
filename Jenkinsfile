@@ -35,17 +35,17 @@ node {
         timeout(time: 2, unit: 'HOURS') {
             dir("kura-position") {
                 withMaven(jdk: 'temurin-jdk17-latest', maven: 'apache-maven-3.9.6', options: [artifactsPublisher(disabled: true)]) {
-                    withSonarQubeEnv (installationName: 'SonarCloud.io', credentialsId: 'sonarcloud-token-kura-position') {
+                    withSonarQubeEnv (installationName: 'SonarCloud.io', credentialsId: 'sonarcloud-token-kura-position-eclipsefdn') {
                         sh '''
                             mvn sonar:sonar \
                                 -Dmaven.test.failure.ignore=true \
-                                -Dsonar.organization=eclipse-kura \
+                                -Dsonar.organization=eclipse \
                                 -Dsonar.pullrequest.branch=${CHANGE_BRANCH} \
                                 -Dsonar.pullrequest.base=${CHANGE_TARGET} \
                                 -Dsonar.pullrequest.key=${CHANGE_ID}\
                                 -Dsonar.java.binaries='target/' \
                                 -Dsonar.core.codeCoveragePlugin=jacoco \
-                                -Dsonar.projectKey=eclipse-kura_kura-position \
+                                -Dsonar.projectKey=org.eclipse.kura:kura-position \
                                 -Dsonar.exclusions=tests/**/*.java
                         '''
                     }
@@ -59,7 +59,7 @@ node {
 stage('quality-gate') {
     // Sonar quality gate
     timeout(time: 30, unit: 'MINUTES') {
-        withCredentials([string(credentialsId: 'sonarcloud-token-kura-position', variable: 'SONARCLOUD_TOKEN')]) {
+        withCredentials([string(credentialsId: 'sonarcloud-token-kura-position-eclipsefdn', variable: 'SONARCLOUD_TOKEN')]) {
             def qg = waitForQualityGate()
             if (qg.status != 'OK') {
                 error "Pipeline aborted due to sonar quality gate failure: ${qg.status}"
