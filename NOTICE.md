@@ -26,8 +26,7 @@ SPDX-License-Identifier: EPL-2.0
 
 The project maintains the following source code repositories:
 
-* https://github.com/eclipse/kura
-* https://github.com/eclipse/kura-apps
+* https://github.com/eclipse-kura/kura-position
 
 ## Third-party Content
 
