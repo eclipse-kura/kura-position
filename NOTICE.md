@@ -34,7 +34,7 @@ This project leverages the following third party content.
 
 ### Maven Dependencies
 
-* com.eurotech.gpsd4java_1.0.0, Apache-2.0, approved, CQ23923
+* eurotech/kura-addons/com.eurotech/gpsd4java/1.0.0, Apache-2.0, approved, CQ23923
 
 ## Cryptography
 
