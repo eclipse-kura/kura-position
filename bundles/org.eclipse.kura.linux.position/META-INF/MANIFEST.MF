@@ -9,6 +9,10 @@ Service-Component: OSGI-INF/*.xml
 Bundle-ClassPath: .
 Bundle-ActivationPolicy: lazy
 Import-Package: javax.microedition.io,
+ de.taimos.gpsd4java.api;version="[1.0,2.0)",
+ de.taimos.gpsd4java.backend;version="[1.0,2.0)",
+ de.taimos.gpsd4java.types;version="[1.0,2.0)",
+ de.taimos.gpsd4java.types.subframes;version="[1.0,2.0)",
  org.eclipse.kura;version="[1.0,2.0)",
  org.eclipse.kura.comm;version="[1.0,2.0)",
  org.eclipse.kura.configuration;version="[1.1,2.0)",
