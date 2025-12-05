@@ -14,6 +14,7 @@ package org.eclipse.kura.linux.position;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
@@ -54,6 +55,9 @@ public class UseGpsdPositionProviderTest {
     private final String DEVICE_2_1_JSON_STREAM = "gpsd-raw-json-device-2-1.txt";
     private final String BOLTGATE_10_12_JSON_STREAM_2 = "gpsd-raw-json-device-2-2.txt";
     private final String DEVICE1_JSON_STREAM = "gpsd-raw-json-device-1.txt";
+    private final String MULTI_DEVICE_JSON_STREAM = "gpsd-raw-json-multi-device-1.txt";
+    private final String MULTI_DEVICE_JSON_STREAM_2 = "gpsd-raw-json-multi-device-2.txt";
+    private final String MULTI_DEVICE_JSON_STREAM_3 = "gpsd-raw-json-multi-device-3.txt";
 
     @Test
     public void startGpsdPositionProvider() {
@@ -206,6 +210,40 @@ public class UseGpsdPositionProviderTest {
         thenGnssTypeIs(new HashSet<>(Arrays.asList(GNSSType.GPS, GNSSType.GLONASS)));
     }
 
+    @Test
+    public void shouldGetPositionFromGpsWithFix() {
+        givenGpsdPositionProvider();
+        givenProperties(defaultProperties());
+        givenGpsdProviderIsStarted();
+        
+        whenNMEAStreamArriveFrom(MULTI_DEVICE_JSON_STREAM);
+
+        thenPositionIsNotNull();
+    }
+
+    @Test
+    public void shouldNotGetPositionIfNoFix() {
+        givenGpsdPositionProvider();
+        givenProperties(defaultProperties());
+        givenGpsdProviderIsStarted();
+        
+        whenNMEAStreamArriveFrom(MULTI_DEVICE_JSON_STREAM_2);
+
+        thenPositionIsNull();
+    }
+
+    @Test
+    public void shouldGetPositionFromGpsWithBestAccuracy() {
+        givenGpsdPositionProvider();
+        givenProperties(defaultProperties());
+        givenGpsdProviderIsStarted();
+        
+        whenNMEAStreamArriveFrom(MULTI_DEVICE_JSON_STREAM_3);
+
+        thenPositionIs();
+        //"lat":41.828250000,"lon":12.268816667,"epv":23.000,
+    }
+
     private void givenGpsdPositionProvider() {
         this.gpsdPositionProvider = new GpsdPositionProvider();
     }
@@ -262,6 +300,15 @@ public class UseGpsdPositionProviderTest {
     }
 
     private void thenPositionIsNotNull() {
+        assertNotNull(this.gpsdPositionProvider.getPosition());
+    }
+
+    private void thenPositionIsNull() {
+        assertNull(this.gpsdPositionProvider.getPosition());
+    }
+
+    private void thenPositionIs() {
+        // TBD
         assertNotNull(this.gpsdPositionProvider.getPosition());
     }
 
