@@ -219,6 +219,7 @@ public class UseGpsdPositionProviderTest {
         whenNMEAStreamArriveFrom(MULTI_DEVICE_JSON_STREAM);
 
         thenPositionIsNotNull();
+        thenPositionIs(41.828250000, 12.268816667, 0.0);
     }
 
     @Test
@@ -229,7 +230,7 @@ public class UseGpsdPositionProviderTest {
         
         whenNMEAStreamArriveFrom(MULTI_DEVICE_JSON_STREAM_2);
 
-        thenPositionIsNull();
+        thenPositionIsEmpty();
     }
 
     @Test
@@ -240,8 +241,7 @@ public class UseGpsdPositionProviderTest {
         
         whenNMEAStreamArriveFrom(MULTI_DEVICE_JSON_STREAM_3);
 
-        thenPositionIs();
-        //"lat":41.828250000,"lon":12.268816667,"epv":23.000,
+        thenPositionIs(41.828250000, 12.268816667, 0.0);
     }
 
     private void givenGpsdPositionProvider() {
@@ -307,9 +307,15 @@ public class UseGpsdPositionProviderTest {
         assertNull(this.gpsdPositionProvider.getPosition());
     }
 
-    private void thenPositionIs() {
-        // TBD
-        assertNotNull(this.gpsdPositionProvider.getPosition());
+    private void thenPositionIs(double latitude, double longitude, double altitude) {
+        Position position = this.gpsdPositionProvider.getPosition();
+        assertEquals(latitude, position.getLatitude().getValue() * 180/Math.PI, 0.000001);
+        assertEquals(longitude, position.getLongitude().getValue() * 180/Math.PI, 0.000001);
+        assertEquals(altitude, position.getAltitude().getValue() * 180/Math.PI, 0.0001);
+    }
+
+    private void thenPositionIsEmpty() {
+        thenPositionIs(0.0, 0.0, 0.0);
     }
 
     private void thenNmeaDateIsNotAvailable() {

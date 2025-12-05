@@ -143,7 +143,6 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
 
     @Override
     public Position getPosition() {
-        // GpsdInternalState internalState = internalStateReference.get();
         GpsdInternalState internalState = getInternalStateReference().get();
         return new Position(toRadiansMeasurement(internalState.getLatitude(), internalState.getLatitudeError()),
                 toRadiansMeasurement(internalState.getLongitude(), internalState.getLongitudeError()),
