@@ -57,7 +57,6 @@ public class UseGpsdPositionProviderTest {
     private final String DEVICE1_JSON_STREAM = "gpsd-raw-json-device-1.txt";
     private final String MULTI_DEVICE_JSON_STREAM = "gpsd-raw-json-multi-device-1.txt";
     private final String MULTI_DEVICE_JSON_STREAM_2 = "gpsd-raw-json-multi-device-2.txt";
-    private final String MULTI_DEVICE_JSON_STREAM_3 = "gpsd-raw-json-multi-device-3.txt";
 
     @Test
     public void startGpsdPositionProvider() {
@@ -231,17 +230,6 @@ public class UseGpsdPositionProviderTest {
         whenNMEAStreamArriveFrom(MULTI_DEVICE_JSON_STREAM_2);
 
         thenPositionIsEmpty();
-    }
-
-    @Test
-    public void shouldGetPositionFromGpsWithBestAccuracy() {
-        givenGpsdPositionProvider();
-        givenProperties(defaultProperties());
-        givenGpsdProviderIsStarted();
-        
-        whenNMEAStreamArriveFrom(MULTI_DEVICE_JSON_STREAM_3);
-
-        thenPositionIs(41.828250000, 12.268816667, 0.0);
     }
 
     private void givenGpsdPositionProvider() {

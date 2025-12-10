@@ -19,12 +19,15 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.OptionalInt;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -59,7 +62,7 @@ import de.taimos.gpsd4java.types.subframes.SUBFRAMEObject;
 public class GpsdPositionProvider implements PositionProvider, IObjectListener {
 
     private static final Logger logger = LoggerFactory.getLogger(GpsdPositionProvider.class);
-    private final Map<String, AtomicReference<GpsdInternalState>> internalStateReferences = new HashMap<>();
+    private final Map<String, AtomicReference<GpsdInternalState>> internalStateReferences = new TreeMap<>();
     private final AtomicReference<Set<GNSSType>> gnssType = new AtomicReference<>(new HashSet<>());
 
     private GPSdEndpoint gpsEndpoint;
@@ -106,29 +109,12 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
 
     private AtomicReference<GpsdInternalState> getInternalStateReference() {
         return this.internalStateReferences.entrySet().stream()
-                .filter(ref -> ref.getValue().get().isValid())
-                .min((ref1, ref2) -> Double.compare(
-                        calculatePositionQuality(ref1.getValue().get()),
-                        calculatePositionQuality(ref2.getValue().get()))).map(entry -> {
-                            logger.debug(entry.getKey() + " selected as best GPSD device.");
-                            logger.debug(calculatePositionQuality(entry.getValue().get()) + " position quality.");
-                            return entry.getValue();
-                        })
+                .filter(ref -> ref.getValue().get().isValid()).findFirst()
+                .map(entry -> {
+                    logger.debug(entry.getKey() + " selected as GPS device.");
+                    return entry.getValue();
+                })
                 .orElse(new AtomicReference<>(new GpsdInternalState()));
-    }
-
-    private double calculatePositionQuality(GpsdInternalState state) {
-        // Calculate combined position error as quality metric
-        // Lower error = better quality
-        double latError = Double.isNaN(state.getLatitudeError()) ? Double.MAX_VALUE : state.getLatitudeError();
-        double lonError = Double.isNaN(state.getLongitudeError()) ? Double.MAX_VALUE : state.getLongitudeError();
-        double altError = Double.isNaN(state.getAltitudeError()) ? Double.MAX_VALUE : state.getAltitudeError();
-        
-        // Use Euclidean distance for horizontal position error
-        double horizontalError = Math.sqrt(latError * latError + lonError * lonError);
-        
-        // Combine horizontal and vertical errors
-        return Math.sqrt(horizontalError * horizontalError + altError * altError);
     }
 
     private boolean hasValidPosition() {
@@ -354,6 +340,7 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
 
         private final long creationInstantNanos;
 
+        private String device;
         private double latitude;
         private double latitudeError;
         private double longitude;
@@ -372,6 +359,7 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
         }
 
         public GpsdInternalState(final TPVObject tpv) {
+            this.device = tpv.getDevice();
             this.setLatitude(tpv.getLatitude());
             this.setLatitudeError(tpv.getLatitudeError());
             this.setLongitude(tpv.getLongitude());
@@ -388,6 +376,7 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
         }
 
         public GpsdInternalState(final GpsdInternalState other) {
+            this.device = other.device;
             this.latitude = other.latitude;
             this.latitudeError = other.latitudeError;
             this.longitude = other.longitude;
@@ -451,6 +440,10 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
             this.mode = value;
         }
 
+        public String getDevice() {
+            return this.device;
+        }
+
         public double getCourseError() {
             return this.courseError;
         }
@@ -509,7 +502,7 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
 
         @Override
         public String toString() {
-            return "GpsdInternalState [latitude=" + latitude + ", latitudeError=" + latitudeError + ", longitude="
+            return "GpsdInternalState [device=" + device + ", latitude=" + latitude + ", latitudeError=" + latitudeError + ", longitude="
                     + longitude + ", longitudeError=" + longitudeError + ", altitude=" + altitude + ", altitudeError="
                     + altitudeError + ", speed=" + speed + ", speedError=" + speedError + ", course=" + course
                     + ", courseError=" + courseError + ", timestamp=" + timestamp + ", mode=" + mode + "]";
