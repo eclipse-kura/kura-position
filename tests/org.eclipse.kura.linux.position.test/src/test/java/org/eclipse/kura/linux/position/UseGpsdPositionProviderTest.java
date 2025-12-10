@@ -14,7 +14,6 @@ package org.eclipse.kura.linux.position;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
@@ -229,7 +228,7 @@ public class UseGpsdPositionProviderTest {
         
         whenNMEAStreamArriveFrom(MULTI_DEVICE_JSON_STREAM_2);
 
-        thenPositionIsEmpty();
+        thenPositionHasZeroValues();
     }
 
     private void givenGpsdPositionProvider() {
@@ -295,10 +294,10 @@ public class UseGpsdPositionProviderTest {
         Position position = this.gpsdPositionProvider.getPosition();
         assertEquals(latitude, position.getLatitude().getValue() * 180/Math.PI, 0.000001);
         assertEquals(longitude, position.getLongitude().getValue() * 180/Math.PI, 0.000001);
-        assertEquals(altitude, position.getAltitude().getValue() * 180/Math.PI, 0.0001);
+        assertEquals(altitude, position.getAltitude().getValue(), 0.0001);
     }
 
-    private void thenPositionIsEmpty() {
+    private void thenPositionHasZeroValues() {
         thenPositionIs(0.0, 0.0, 0.0);
     }
 
