@@ -291,10 +291,6 @@ public class UseGpsdPositionProviderTest {
         assertNotNull(this.gpsdPositionProvider.getPosition());
     }
 
-    private void thenPositionIsNull() {
-        assertNull(this.gpsdPositionProvider.getPosition());
-    }
-
     private void thenPositionIs(double latitude, double longitude, double altitude) {
         Position position = this.gpsdPositionProvider.getPosition();
         assertEquals(latitude, position.getLatitude().getValue() * 180/Math.PI, 0.000001);
