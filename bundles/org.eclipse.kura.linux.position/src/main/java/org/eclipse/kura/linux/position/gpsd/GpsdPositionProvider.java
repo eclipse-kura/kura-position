@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,7 +63,7 @@ import de.taimos.gpsd4java.types.subframes.SUBFRAMEObject;
 public class GpsdPositionProvider implements PositionProvider, IObjectListener {
 
     private static final Logger logger = LoggerFactory.getLogger(GpsdPositionProvider.class);
-    private final Map<String, AtomicReference<GpsdInternalState>> internalStateReferences = new TreeMap<>();
+    private final Map<String, AtomicReference<GpsdInternalState>> internalStateReferences = Collections.synchronizedMap(new TreeMap<>());
     private final AtomicReference<Set<GNSSType>> gnssType = new AtomicReference<>(new HashSet<>());
 
     private GPSdEndpoint gpsEndpoint;
@@ -303,6 +304,7 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
 
         if (now - currentState.getCreationInstantNanos() > validityIntervalNanos) {
             final TPVObject obj = new TPVObject();
+            obj.setDevice(currentState.getDevice());
             obj.setMode(ENMEAMode.NoFix);
             handleTPV(obj);
         }
