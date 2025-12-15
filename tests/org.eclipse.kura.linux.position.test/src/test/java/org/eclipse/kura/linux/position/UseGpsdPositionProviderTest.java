@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2024 Eurotech and/or its affiliates and others
+ * Copyright (c) 2011, 2025 Eurotech and/or its affiliates and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -54,6 +54,8 @@ public class UseGpsdPositionProviderTest {
     private final String DEVICE_2_1_JSON_STREAM = "gpsd-raw-json-device-2-1.txt";
     private final String BOLTGATE_10_12_JSON_STREAM_2 = "gpsd-raw-json-device-2-2.txt";
     private final String DEVICE1_JSON_STREAM = "gpsd-raw-json-device-1.txt";
+    private final String MULTI_DEVICE_JSON_STREAM = "gpsd-raw-json-multi-device-1.txt";
+    private final String MULTI_DEVICE_JSON_STREAM_2 = "gpsd-raw-json-multi-device-2.txt";
 
     @Test
     public void startGpsdPositionProvider() {
@@ -206,6 +208,29 @@ public class UseGpsdPositionProviderTest {
         thenGnssTypeIs(new HashSet<>(Arrays.asList(GNSSType.GPS, GNSSType.GLONASS)));
     }
 
+    @Test
+    public void shouldGetPositionFromGpsWithFix() {
+        givenGpsdPositionProvider();
+        givenProperties(defaultProperties());
+        givenGpsdProviderIsStarted();
+        
+        whenNMEAStreamArriveFrom(MULTI_DEVICE_JSON_STREAM);
+
+        thenPositionIsNotNull();
+        thenPositionIs(41.828250000, 12.268816667, 0.0);
+    }
+
+    @Test
+    public void shouldNotGetPositionIfNoFix() {
+        givenGpsdPositionProvider();
+        givenProperties(defaultProperties());
+        givenGpsdProviderIsStarted();
+        
+        whenNMEAStreamArriveFrom(MULTI_DEVICE_JSON_STREAM_2);
+
+        thenPositionHasZeroValues();
+    }
+
     private void givenGpsdPositionProvider() {
         this.gpsdPositionProvider = new GpsdPositionProvider();
     }
@@ -263,6 +288,17 @@ public class UseGpsdPositionProviderTest {
 
     private void thenPositionIsNotNull() {
         assertNotNull(this.gpsdPositionProvider.getPosition());
+    }
+
+    private void thenPositionIs(double latitude, double longitude, double altitude) {
+        Position position = this.gpsdPositionProvider.getPosition();
+        assertEquals(latitude, position.getLatitude().getValue() * 180/Math.PI, 0.000001);
+        assertEquals(longitude, position.getLongitude().getValue() * 180/Math.PI, 0.000001);
+        assertEquals(altitude, position.getAltitude().getValue(), 0.0001);
+    }
+
+    private void thenPositionHasZeroValues() {
+        thenPositionIs(0.0, 0.0, 0.0);
     }
 
     private void thenNmeaDateIsNotAvailable() {
