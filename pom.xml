@@ -41,6 +41,6 @@
         <module>bundles</module>
         <module>distrib</module>
         <module>tests</module>
-        <module>kura-position-bom</module>
+        <module>kura-position-tycho-deps</module>
     </modules>
 </project>

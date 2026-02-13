@@ -19,11 +19,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.eclipse.kura</groupId>
-    <artifactId>kura-position-bom</artifactId>
+    <artifactId>kura-position-tycho-deps</artifactId>
     <version>2.0.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
-    <name>Kura Position BOM</name>
+    <name>Kura Position Tycho Deps</name>
 
     <distributionManagement>
         <repository>
