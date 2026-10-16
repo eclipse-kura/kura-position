@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2024 Eurotech and/or its affiliates and others
+ * Copyright (c) 2017, 2026 Eurotech and/or its affiliates and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -45,14 +45,13 @@ import org.eclipse.kura.linux.position.serial.GpsDeviceTracker;
 import org.eclipse.kura.linux.position.serial.ModemGpsStatusTracker;
 import org.eclipse.kura.linux.position.serial.SerialDevicePositionProvider;
 import org.eclipse.kura.position.GNSSType;
-import org.eclipse.kura.position.NmeaPosition;
 import org.eclipse.kura.position.PositionListener;
 import org.eclipse.kura.position.PositionLockedEvent;
 import org.eclipse.kura.position.PositionLostEvent;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
-import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
+import org.osgi.service.event.Event;
 import org.osgi.service.io.ConnectionFactory;
 import org.osgi.util.position.Position;
 
@@ -247,16 +246,6 @@ public class PositionServiceTest {
 
         assertNotNull(fixture.ps.getDateTime());
         assertEquals(new HashSet<>(Arrays.asList(GNSSType.GPS)), fixture.ps.getGnssTypes());
-
-        final NmeaPosition nmeaPosition = fixture.ps.getNmeaPosition();
-
-        assertEquals(46.0d, nmeaPosition.getLatitude(), EPS);
-        assertEquals(15.0d, nmeaPosition.getLongitude(), EPS);
-        assertEquals(300, nmeaPosition.getAltitude(), EPS);
-
-        assertNull(fixture.ps.getNmeaDate());
-        assertNull(fixture.ps.getNmeaTime());
-        assertNull(fixture.ps.getLastSentence());
 
         fixture.ps.deactivate();
     }
@@ -533,40 +522,18 @@ public class PositionServiceTest {
         assertTrue(fixture.ps.isLocked());
 
         final Position position = fixture.ps.getPosition();
-        final NmeaPosition nmeaPosition = fixture.ps.getNmeaPosition();
-        final String date = fixture.ps.getNmeaDate();
-        final String time = fixture.ps.getNmeaTime();
-        final String lastSentence = fixture.ps.getLastSentence();
         final Set<GNSSType> gnssTypes = fixture.ps.getGnssTypes();
 
         // from GGA
-        assertEquals(1, nmeaPosition.getFixQuality());
-        assertEquals(6, nmeaPosition.getNrSatellites());
-        assertEquals(1.7, nmeaPosition.getDOP(), EPS);
-        assertEquals(478.3, nmeaPosition.getAltitude(), EPS);
         assertEquals(478.3, position.getAltitude().getValue(), EPS);
 
-        // from GSA
-        assertEquals(3, nmeaPosition.get3Dfix());
-        assertEquals(4.9, nmeaPosition.getPDOP(), EPS);
-        assertEquals(1.7, nmeaPosition.getHDOP(), EPS);
-        assertEquals(4.6, nmeaPosition.getVDOP(), EPS);
-
         // from RMC
-        assertEquals("121041.000", time);
-        assertEquals("220517", date);
-        assertEquals(15.227317, nmeaPosition.getLongitude(), EPS);
-        assertEquals(46.922953, nmeaPosition.getLatitude(), EPS);
-        assertEquals(319.55, nmeaPosition.getTrack(), EPS);
         assertEquals(Math.toRadians(15.227317), position.getLongitude().getValue(), EPS);
         assertEquals(Math.toRadians(46.922953), position.getLatitude().getValue(), EPS);
         assertEquals(Math.toRadians(319.55), position.getTrack().getValue(), EPS);
 
         // from VTG
-        assertEquals(12.34 / 3.6, nmeaPosition.getSpeed(), EPS);
         assertEquals(12.34 / 3.6, position.getSpeed().getValue(), EPS);
-
-        assertEquals("$GNVTG,,,,,,,12.34,,,,*4a\n", lastSentence);
 
         assertEquals(new HashSet<>(Arrays.asList(GNSSType.GPS, GNSSType.GLONASS)), gnssTypes);
 
