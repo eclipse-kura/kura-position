@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2024 Eurotech and/or its affiliates and others
+ * Copyright (c) 2011, 2026 Eurotech and/or its affiliates and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -170,16 +170,6 @@ public class PositionServiceImpl
     }
 
     @Override
-    public NmeaPosition getNmeaPosition() {
-        if (this.options.isEnabled() && !this.options.isStatic()) {
-            return Optional.ofNullable(this.currentProvider).map(PositionProvider::getNmeaPosition)
-                    .orElseGet(() -> staticNMEAPosition(0, 0, 0));
-        } else {
-            return this.staticNmeaPosition;
-        }
-    }
-
-    @Override
     public boolean isLocked() {
         if (!this.options.isEnabled()) {
             return false;
@@ -188,24 +178,6 @@ public class PositionServiceImpl
             return true;
         }
         return Optional.ofNullable(this.currentProvider).map(PositionProvider::isLocked).orElse(false);
-    }
-
-    @Override
-    public String getNmeaTime() {
-        if (this.currentProvider != null) {
-            return this.currentProvider.getNmeaTime();
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public String getNmeaDate() {
-        if (this.currentProvider != null) {
-            return this.currentProvider.getNmeaDate();
-        } else {
-            return null;
-        }
     }
 
     @Override
@@ -247,15 +219,6 @@ public class PositionServiceImpl
     @Override
     public void unregisterListener(String listenerId) {
         this.positionListeners.remove(listenerId);
-    }
-
-    @Override
-    public String getLastSentence() {
-        if (this.currentProvider != null) {
-            return this.currentProvider.getLastSentence();
-        } else {
-            return null;
-        }
     }
 
     protected PositionServiceOptions getPositionServiceOptions() {
