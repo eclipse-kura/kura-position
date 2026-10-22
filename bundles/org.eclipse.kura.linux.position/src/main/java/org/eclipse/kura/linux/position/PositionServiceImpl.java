@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2011, 2026 Eurotech and/or its affiliates and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  *******************************************************************************/
@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.eclipse.kura.configuration.ConfigurableComponent;
 import org.eclipse.kura.linux.position.options.PositionServiceOptions;
 import org.eclipse.kura.linux.position.provider.GpsDeviceAvailabilityListener;
@@ -140,8 +139,11 @@ public class PositionServiceImpl
         }
 
         if (this.options.isStatic()) {
-            setStaticPosition(this.options.getStaticLatitude(), this.options.getStaticLongitude(),
-                    this.options.getStaticAltitude(), this.options.getStaticGnssType());
+            setStaticPosition(
+                    this.options.getStaticLatitude(),
+                    this.options.getStaticLongitude(),
+                    this.options.getStaticAltitude(),
+                    this.options.getStaticGnssType());
             setLock(true);
         } else {
             try {
@@ -161,12 +163,12 @@ public class PositionServiceImpl
     @Override
     public Position getPosition() {
         if (this.options.isEnabled() && !this.options.isStatic()) {
-            return Optional.ofNullable(this.currentProvider).map(PositionProvider::getPosition)
+            return Optional.ofNullable(this.currentProvider)
+                    .map(PositionProvider::getPosition)
                     .orElseGet(() -> staticPosition(0, 0, 0));
         } else {
             return this.staticPosition;
         }
-
     }
 
     @Override
@@ -177,7 +179,9 @@ public class PositionServiceImpl
         if (this.options.isStatic()) {
             return true;
         }
-        return Optional.ofNullable(this.currentProvider).map(PositionProvider::isLocked).orElse(false);
+        return Optional.ofNullable(this.currentProvider)
+                .map(PositionProvider::isLocked)
+                .orElse(false);
     }
 
     @Override
@@ -204,11 +208,9 @@ public class PositionServiceImpl
             } else if (this.options.isStatic()) {
                 return new HashSet<>(Arrays.asList(this.staticGnssType));
             }
-
         }
 
         return Collections.emptySet();
-
     }
 
     @Override
@@ -239,11 +241,12 @@ public class PositionServiceImpl
 
         this.currentProvider.init(options, this, this);
         this.currentProvider.start();
-
     }
 
     private Optional<PositionProvider> getSelectedProvider(final PositionServiceOptions options) {
-        return this.positionProviders.stream().filter(pp -> isSelectedProvider(pp, options)).findAny();
+        return this.positionProviders.stream()
+                .filter(pp -> isSelectedProvider(pp, options))
+                .findAny();
     }
 
     private boolean isSelectedProvider(final PositionProvider provider, final PositionServiceOptions options) {
@@ -293,8 +296,8 @@ public class PositionServiceImpl
     }
 
     private static NmeaPosition staticNMEAPosition(double latitudeDeg, double longitudeDeg, double altitudeNmea) {
-        return new NmeaPosition(latitudeDeg, longitudeDeg, altitudeNmea, 0, 0, 0, 0, 0, 0, 0, 0, 0, (char) 0, (char) 0,
-                (char) 0);
+        return new NmeaPosition(
+                latitudeDeg, longitudeDeg, altitudeNmea, 0, 0, 0, 0, 0, 0, 0, 0, 0, (char) 0, (char) 0, (char) 0);
     }
 
     @Override
@@ -317,5 +320,4 @@ public class PositionServiceImpl
 
         updateInternal();
     }
-
 }

@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.eclipse.kura.internal.rest.position.PositionRestService;
 import org.eclipse.kura.position.GNSSType;
 import org.eclipse.kura.position.PositionService;
@@ -138,18 +137,18 @@ public class PositionRestServiceTest {
         positionRestService.setPositionServiceImpl(positionService);
     }
 
-    private void givenPosition(Double longitude, Double latitude, Double altitude, Double speed, Double track,
-            Set<GNSSType> gnssTypeSet) {
+    private void givenPosition(
+            Double longitude, Double latitude, Double altitude, Double speed, Double track, Set<GNSSType> gnssTypeSet) {
 
         Measurement latitudeMesurment = latitude != null ? new Measurement(Math.toRadians(latitude), Unit.rad) : null;
-        Measurement longitudeMesurment = longitude != null ? new Measurement(Math.toRadians(longitude), Unit.rad)
-                : null;
+        Measurement longitudeMesurment =
+                longitude != null ? new Measurement(Math.toRadians(longitude), Unit.rad) : null;
         Measurement altitudeMesurment = altitude != null ? new Measurement(altitude, Unit.m) : null;
         Measurement speedMesurment = speed != null ? new Measurement(speed, Unit.m_s) : null;
         Measurement trackMesurment = track != null ? new Measurement(Math.toRadians(track), Unit.rad) : null;
 
-        Position testPosition = new Position(latitudeMesurment, longitudeMesurment, altitudeMesurment, speedMesurment,
-                trackMesurment);
+        Position testPosition =
+                new Position(latitudeMesurment, longitudeMesurment, altitudeMesurment, speedMesurment, trackMesurment);
 
         when(positionService.getPosition()).thenReturn(testPosition);
         when(positionService.getGnssTypes()).thenReturn(gnssTypeSet);
@@ -188,8 +187,8 @@ public class PositionRestServiceTest {
         }
     }
 
-    private void thenPositionIs(Double longitude, Double latitude, Double altitude, Double speed, Double track,
-            Set<String> gnssTypeSet) {
+    private void thenPositionIs(
+            Double longitude, Double latitude, Double altitude, Double speed, Double track, Set<String> gnssTypeSet) {
 
         if (longitude != null) {
             assertEquals(longitude, positionDTO.getLongitude(), 0.0);

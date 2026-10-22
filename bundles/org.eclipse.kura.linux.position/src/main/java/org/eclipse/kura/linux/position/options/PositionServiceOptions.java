@@ -1,22 +1,20 @@
 /*******************************************************************************
  * Copyright (c) 2018, 2024 Eurotech and/or its affiliates and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  *******************************************************************************/
-
 package org.eclipse.kura.linux.position.options;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.OptionalInt;
-
 import org.eclipse.kura.comm.CommURI;
 import org.eclipse.kura.linux.position.provider.PositionProviderType;
 
@@ -37,8 +35,8 @@ public class PositionServiceOptions {
     private static final Property<String> PROVIDER = new Property<>("provider", PositionProviderType.SERIAL.getValue());
     private static final Property<String> GPSD_HOST = new Property<>("gpsd.host", "localhost");
     private static final Property<Integer> GPSD_PORT = new Property<>("gpsd.port", 2947);
-    private static final Property<Integer> GPSD_MAX_FIX_VALIDITY_INTERVAL = new Property<>(
-            "gpsd.max.fix.validity.interval.seconds", 60);
+    private static final Property<Integer> GPSD_MAX_FIX_VALIDITY_INTERVAL =
+            new Property<>("gpsd.max.fix.validity.interval.seconds", 60);
     private static final Property<Integer> MM_REFRESH_RATE = new Property<>("modem.manager.refresh.rate.seconds", 30);
 
     private final Map<String, Object> properties;
@@ -121,8 +119,12 @@ public class PositionServiceOptions {
             return null;
         }
 
-        return new CommURI.Builder(getPort()).withBaudRate(getBaudRate()).withDataBits(getBitsPerWord())
-                .withStopBits(getStopBits()).withParity(getParity()).build();
+        return new CommURI.Builder(getPort())
+                .withBaudRate(getBaudRate())
+                .withDataBits(getBitsPerWord())
+                .withStopBits(getStopBits())
+                .withParity(getParity())
+                .build();
     }
 
     @Override
@@ -138,14 +140,20 @@ public class PositionServiceOptions {
         }
         final PositionServiceOptions other = (PositionServiceOptions) obj;
 
-        return isEnabled() == other.isEnabled() && isStatic() == other.isStatic()
+        return isEnabled() == other.isEnabled()
+                && isStatic() == other.isStatic()
                 && getStaticLatitude() == other.getStaticLatitude()
                 && getStaticLongitude() == other.getStaticLongitude()
-                && getStaticAltitude() == other.getStaticAltitude() && getStaticGnssType() == other.getStaticGnssType()
-                && getPort().equals(other.getPort()) && getBaudRate() == other.getBaudRate()
-                && getBitsPerWord() == other.getBitsPerWord() && getStopBits() == other.getStopBits()
-                && getParity() == other.getParity() && getPositionProvider().equals(other.getPositionProvider())
-                && getGpsdHost().equals(other.getGpsdHost()) && getGpsdPort() == other.getGpsdPort()
+                && getStaticAltitude() == other.getStaticAltitude()
+                && getStaticGnssType() == other.getStaticGnssType()
+                && getPort().equals(other.getPort())
+                && getBaudRate() == other.getBaudRate()
+                && getBitsPerWord() == other.getBitsPerWord()
+                && getStopBits() == other.getStopBits()
+                && getParity() == other.getParity()
+                && getPositionProvider().equals(other.getPositionProvider())
+                && getGpsdHost().equals(other.getGpsdHost())
+                && getGpsdPort() == other.getGpsdPort()
                 && getGpsdMaxValidityInterval().equals(other.getGpsdMaxValidityInterval())
                 && getModemManagerRefreshRate() == other.getModemManagerRefreshRate();
     }

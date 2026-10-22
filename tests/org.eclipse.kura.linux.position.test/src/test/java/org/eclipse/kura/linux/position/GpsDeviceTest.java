@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2017, 2024 Eurotech and/or its affiliates and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  ******************************************************************************/
@@ -31,7 +31,6 @@ import java.io.SequenceInputStream;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
 import org.eclipse.kura.comm.CommConnection;
 import org.eclipse.kura.comm.CommURI;
 import org.eclipse.kura.linux.position.provider.LockStatusListener;
@@ -81,8 +80,13 @@ public class GpsDeviceTest implements LockStatusListener {
 
     @Test(expected = PositionException.class)
     public void testConfigureConnectionISNull() throws PositionException, IOException, InterruptedException {
-        final CommURI commUri = new CommURI.Builder("1").withBaudRate(9600).withStopBits(1).withParity(0)
-                .withOpenTimeout(2000).withDataBits(8).build();
+        final CommURI commUri = new CommURI.Builder("1")
+                .withBaudRate(9600)
+                .withStopBits(1)
+                .withParity(0)
+                .withOpenTimeout(2000)
+                .withDataBits(8)
+                .build();
 
         CommConnection connMock = mock(CommConnection.class);
         when(connMock.openInputStream()).thenReturn(null);
@@ -97,8 +101,13 @@ public class GpsDeviceTest implements LockStatusListener {
     public void testConfigureConnectionReadException() throws PositionException, IOException, InterruptedException {
         // IOException => disconnect and close the stream
 
-        final CommURI commUri = new CommURI.Builder("1").withBaudRate(9600).withStopBits(1).withParity(0)
-                .withOpenTimeout(2000).withDataBits(8).build();
+        final CommURI commUri = new CommURI.Builder("1")
+                .withBaudRate(9600)
+                .withStopBits(1)
+                .withParity(0)
+                .withOpenTimeout(2000)
+                .withDataBits(8)
+                .build();
 
         InputStream is = mock(InputStream.class);
         when(is.read()).thenThrow(new IOException("test"));
@@ -121,8 +130,13 @@ public class GpsDeviceTest implements LockStatusListener {
 
     @Test
     public void testCloseInputStream() throws IOException, PositionException {
-        final CommURI commUri = new CommURI.Builder("1").withBaudRate(9600).withStopBits(1).withParity(0)
-                .withOpenTimeout(2000).withDataBits(8).build();
+        final CommURI commUri = new CommURI.Builder("1")
+                .withBaudRate(9600)
+                .withStopBits(1)
+                .withParity(0)
+                .withOpenTimeout(2000)
+                .withDataBits(8)
+                .build();
 
         final BlockingSerialPortInputStream is = new BlockingSerialPortInputStream();
 
@@ -142,10 +156,14 @@ public class GpsDeviceTest implements LockStatusListener {
     @Test
     public void testConfigureConnection() throws PositionException, IOException, InterruptedException {
         // test proper call with a few good NMEA sentences and a few corrupted ones
-        visits = Arrays.copyOf(new boolean[] { true }, NUM + 1);
+        visits = Arrays.copyOf(new boolean[] {true}, NUM + 1);
 
-        final CommURI commUri = new CommURI.Builder("1").withBaudRate(9600).withStopBits(1).withParity(0)
-                .withDataBits(8).build();
+        final CommURI commUri = new CommURI.Builder("1")
+                .withBaudRate(9600)
+                .withStopBits(1)
+                .withParity(0)
+                .withDataBits(8)
+                .build();
 
         String nmeaStr = "$GPGGA,121041.000,4655.3772,N,01513.6390,E,1,06,1.7,478.3,M,44.7,M,,0000*5d\n"
                 + "$GPGSA,A,3,25,23,07,27,20,04,,,,,,,4.9,1.7,4.6*39\n"
@@ -153,8 +171,8 @@ public class GpsDeviceTest implements LockStatusListener {
                 + "$GNVTG,,,,,,,12.34,,,,*4a\n" + "$GNTXT,some text with failing checksum,*4a\n"
                 + "$GNTXT,some text with proper checksum,*5d\n" + "$HNINV,invalid,*26\n";
         @SuppressWarnings("resource")
-        InputStream is = new SequenceInputStream(new ByteArrayInputStream(nmeaStr.getBytes()),
-                new BlockingSerialPortInputStream());
+        InputStream is = new SequenceInputStream(
+                new ByteArrayInputStream(nmeaStr.getBytes()), new BlockingSerialPortInputStream());
 
         CommConnection connMock = mock(CommConnection.class);
         when(connMock.openInputStream()).thenReturn(is);
@@ -187,8 +205,10 @@ public class GpsDeviceTest implements LockStatusListener {
             // result of GGA
             assertTrue(gps.isValidPosition());
             assertEquals("121041.000", gps.getTimeNmea());
-            assertEquals(Math.toRadians(15.227317), gps.getPosition().getLongitude().getValue(), EPS);
-            assertEquals(Math.toRadians(46.922953), gps.getPosition().getLatitude().getValue(), EPS);
+            assertEquals(
+                    Math.toRadians(15.227317), gps.getPosition().getLongitude().getValue(), EPS);
+            assertEquals(
+                    Math.toRadians(46.922953), gps.getPosition().getLatitude().getValue(), EPS);
 
             NmeaPosition nmeaPosition = gps.getNmeaPosition();
             assertEquals(1, nmeaPosition.getFixQuality());
@@ -233,5 +253,4 @@ public class GpsDeviceTest implements LockStatusListener {
         // TODO Auto-generated method stub
 
     }
-
 }

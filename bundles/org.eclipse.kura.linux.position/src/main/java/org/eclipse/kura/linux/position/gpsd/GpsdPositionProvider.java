@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2022, 2025 Eurotech and/or its affiliates and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  *******************************************************************************/
@@ -15,6 +15,16 @@ package org.eclipse.kura.linux.position.gpsd;
 
 import static java.lang.Math.toRadians;
 
+import de.taimos.gpsd4java.api.IObjectListener;
+import de.taimos.gpsd4java.backend.GPSdEndpoint;
+import de.taimos.gpsd4java.types.ATTObject;
+import de.taimos.gpsd4java.types.DeviceObject;
+import de.taimos.gpsd4java.types.DevicesObject;
+import de.taimos.gpsd4java.types.ENMEAMode;
+import de.taimos.gpsd4java.types.SATObject;
+import de.taimos.gpsd4java.types.SKYObject;
+import de.taimos.gpsd4java.types.TPVObject;
+import de.taimos.gpsd4java.types.subframes.SUBFRAMEObject;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -32,7 +42,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-
 import org.eclipse.kura.linux.position.options.PositionServiceOptions;
 import org.eclipse.kura.linux.position.provider.GpsDeviceAvailabilityListener;
 import org.eclipse.kura.linux.position.provider.LockStatusListener;
@@ -46,22 +55,13 @@ import org.osgi.util.position.Position;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.taimos.gpsd4java.api.IObjectListener;
-import de.taimos.gpsd4java.backend.GPSdEndpoint;
-import de.taimos.gpsd4java.types.ATTObject;
-import de.taimos.gpsd4java.types.DeviceObject;
-import de.taimos.gpsd4java.types.DevicesObject;
-import de.taimos.gpsd4java.types.ENMEAMode;
-import de.taimos.gpsd4java.types.SATObject;
-import de.taimos.gpsd4java.types.SKYObject;
-import de.taimos.gpsd4java.types.TPVObject;
-import de.taimos.gpsd4java.types.subframes.SUBFRAMEObject;
-
 public class GpsdPositionProvider implements PositionProvider, IObjectListener {
 
     private static final Logger logger = LoggerFactory.getLogger(GpsdPositionProvider.class);
-    private final AtomicReference<GpsdInternalState> defaultInternalStateReference = new AtomicReference<>(new GpsdInternalState());
-    private final Map<String, AtomicReference<GpsdInternalState>> internalStateReferences = Collections.synchronizedMap(new TreeMap<>());
+    private final AtomicReference<GpsdInternalState> defaultInternalStateReference =
+            new AtomicReference<>(new GpsdInternalState());
+    private final Map<String, AtomicReference<GpsdInternalState>> internalStateReferences =
+            Collections.synchronizedMap(new TreeMap<>());
     private final AtomicReference<Set<GNSSType>> gnssType = new AtomicReference<>(new HashSet<>());
 
     private GPSdEndpoint gpsEndpoint;
@@ -110,7 +110,8 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
 
     private AtomicReference<GpsdInternalState> getInternalStateReference() {
         return this.internalStateReferences.entrySet().stream()
-                .filter(ref -> ref.getValue().get().isValid()).findFirst()
+                .filter(ref -> ref.getValue().get().isValid())
+                .findFirst()
                 .map(entry -> {
                     logger.debug(entry.getKey() + " selected as GPS device.");
                     return entry.getValue();
@@ -131,7 +132,8 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
     @Override
     public Position getPosition() {
         GpsdInternalState internalState = getInternalStateReference().get();
-        return new Position(toRadiansMeasurement(internalState.getLatitude(), internalState.getLatitudeError()),
+        return new Position(
+                toRadiansMeasurement(internalState.getLatitude(), internalState.getLatitudeError()),
                 toRadiansMeasurement(internalState.getLongitude(), internalState.getLongitudeError()),
                 toMetersMeasurement(internalState.getAltitude(), internalState.getAltitudeError()),
                 toMetersPerSecondMeasurement(internalState.getSpeed(), internalState.getSpeedError()),
@@ -141,8 +143,12 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
     @Override
     public NmeaPosition getNmeaPosition() {
         GpsdInternalState internalState = getInternalStateReference().get();
-        return new NmeaPosition(internalState.getLatitude(), internalState.getLongitude(), internalState.getAltitude(),
-                internalState.getSpeed(), internalState.getCourse());
+        return new NmeaPosition(
+                internalState.getLatitude(),
+                internalState.getLongitude(),
+                internalState.getAltitude(),
+                internalState.getSpeed(),
+                internalState.getCourse());
     }
 
     @Override
@@ -157,7 +163,8 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
 
     @Override
     public LocalDateTime getDateTime() {
-        return LocalDateTime.ofEpochSecond(getInternalStateReference().get().getTimestamp().longValue(), 0, ZoneOffset.UTC);
+        return LocalDateTime.ofEpochSecond(
+                getInternalStateReference().get().getTimestamp().longValue(), 0, ZoneOffset.UTC);
     }
 
     @Override
@@ -180,7 +187,9 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
     }
 
     @Override
-    public void init(PositionServiceOptions configuration, LockStatusListener gpsDeviceListener,
+    public void init(
+            PositionServiceOptions configuration,
+            LockStatusListener gpsDeviceListener,
             GpsDeviceAvailabilityListener gpsDeviceAvailabilityListener) {
         stop();
 
@@ -234,7 +243,6 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
         }
 
         this.gnssType.set(newGnssTypeSet);
-
     }
 
     @Override
@@ -281,7 +289,6 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
             this.gpsDeviceListener.onLockStatusChanged(isNewPositionValid);
             logger.info("Lock Status changed: {}", newState);
         }
-
     }
 
     private void restartCheckTask() {
@@ -291,9 +298,10 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
 
             checkFuture.cancel(false);
 
-            final long intervalNanos = Duration.ofSeconds(validityInterval.getAsInt()).toNanos();
-            checkFuture = executor.schedule(() -> this.checkFixValidity(intervalNanos),
-                    validityInterval.getAsInt() + 1L, TimeUnit.SECONDS);
+            final long intervalNanos =
+                    Duration.ofSeconds(validityInterval.getAsInt()).toNanos();
+            checkFuture = executor.schedule(
+                    () -> this.checkFixValidity(intervalNanos), validityInterval.getAsInt() + 1L, TimeUnit.SECONDS);
         }
     }
 
@@ -311,8 +319,8 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
     }
 
     private Measurement toRadiansMeasurement(double value, double error) {
-        return new Measurement(toRadians(Double.isNaN(value) ? 0.0d : value),
-                Double.isNaN(error) ? 0.0d : toRadians(error), Unit.rad);
+        return new Measurement(
+                toRadians(Double.isNaN(value) ? 0.0d : value), Double.isNaN(error) ? 0.0d : toRadians(error), Unit.rad);
     }
 
     private Measurement toMetersMeasurement(double value, double error) {
@@ -504,12 +512,11 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
 
         @Override
         public String toString() {
-            return "GpsdInternalState [device=" + device + ", latitude=" + latitude + ", latitudeError=" + latitudeError + ", longitude="
+            return "GpsdInternalState [device=" + device + ", latitude=" + latitude + ", latitudeError=" + latitudeError
+                    + ", longitude="
                     + longitude + ", longitudeError=" + longitudeError + ", altitude=" + altitude + ", altitudeError="
                     + altitudeError + ", speed=" + speed + ", speedError=" + speedError + ", course=" + course
                     + ", courseError=" + courseError + ", timestamp=" + timestamp + ", mode=" + mode + "]";
         }
-
     }
-
 }

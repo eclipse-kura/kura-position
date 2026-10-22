@@ -12,6 +12,11 @@
  *******************************************************************************/
 package org.eclipse.kura.internal.rest.position;
 
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import org.eclipse.kura.KuraErrorCode;
 import org.eclipse.kura.KuraException;
 import org.eclipse.kura.cloudconnection.request.RequestHandler;
@@ -26,12 +31,6 @@ import org.osgi.service.useradmin.Role;
 import org.osgi.service.useradmin.UserAdmin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import jakarta.annotation.security.RolesAllowed;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
 
 @Path("/position/v1")
 public class PositionRestService {
@@ -108,7 +107,6 @@ public class PositionRestService {
 
         throw DefaultExceptionHandler.toWebApplicationException(
                 new KuraException(KuraErrorCode.SERVICE_UNAVAILABLE, POSITION_IS_NOT_LOCKED));
-
     }
 
     /**
