@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2017, 2026 Eurotech and/or its affiliates and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  ******************************************************************************/
@@ -36,7 +36,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.kura.KuraException;
 import org.eclipse.kura.comm.CommConnection;
 import org.eclipse.kura.comm.CommURI;
@@ -50,8 +49,8 @@ import org.eclipse.kura.position.PositionLockedEvent;
 import org.eclipse.kura.position.PositionLostEvent;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
-import org.osgi.service.event.EventAdmin;
 import org.osgi.service.event.Event;
+import org.osgi.service.event.EventAdmin;
 import org.osgi.service.io.ConnectionFactory;
 import org.osgi.util.position.Position;
 
@@ -75,7 +74,6 @@ public class PositionServiceTest {
             this.ps.setEventAdmin(this.eventAdmin);
             this.positionProvider = getSerialDevicePositionProvider(nmeaStrings);
             this.ps.setPositionProviders(this.positionProvider);
-
         }
 
         public PositionServiceTestFixture() throws IOException {
@@ -177,7 +175,6 @@ public class PositionServiceTest {
 
             return false;
         }
-
     }
 
     private static UriMatcher isUri(final CommURI uri) {
@@ -335,7 +332,10 @@ public class PositionServiceTest {
     public void testUseGpsFromConfig() throws IOException {
         final PositionServiceTestFixture fixture = new PositionServiceTestFixture();
 
-        final CommURI defaultURI = new CommURI.Builder("port").withBaudRate(9600).withDataBits(8).withStopBits(0)
+        final CommURI defaultURI = new CommURI.Builder("port")
+                .withBaudRate(9600)
+                .withDataBits(8)
+                .withStopBits(0)
                 .build();
 
         fixture.ps.activate(getDefaultProperties());
@@ -360,8 +360,12 @@ public class PositionServiceTest {
 
         final PositionServiceTestFixture fixture = new PositionServiceTestFixture();
 
-        final CommURI modemUri = new CommURI.Builder("modemPort").withBaudRate(115200).withStopBits(0).withDataBits(8)
-                .withParity(0).build();
+        final CommURI modemUri = new CommURI.Builder("modemPort")
+                .withBaudRate(115200)
+                .withStopBits(0)
+                .withDataBits(8)
+                .withParity(0)
+                .build();
 
         when(fixture.getModemGpsStatusTracker().getGpsDeviceUri()).thenReturn(modemUri);
 
@@ -404,8 +408,13 @@ public class PositionServiceTest {
         final GpsDevice deviceFromConfig = fixture.getGpsDevice();
         assertNotNull(deviceFromConfig);
 
-        when(fixture.getModemGpsStatusTracker().getGpsDeviceUri()).thenReturn(new CommURI.Builder("modemPort")
-                .withBaudRate(115200).withStopBits(0).withDataBits(8).withParity(0).build());
+        when(fixture.getModemGpsStatusTracker().getGpsDeviceUri())
+                .thenReturn(new CommURI.Builder("modemPort")
+                        .withBaudRate(115200)
+                        .withStopBits(0)
+                        .withDataBits(8)
+                        .withParity(0)
+                        .build());
 
         fixture.ps.onGpsDeviceAvailabilityChanged();
 
@@ -538,6 +547,5 @@ public class PositionServiceTest {
         assertEquals(new HashSet<>(Arrays.asList(GNSSType.GPS, GNSSType.GLONASS)), gnssTypes);
 
         fixture.ps.deactivate();
-
     }
 }

@@ -1,21 +1,19 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Eurotech and/or its affiliates and others
- * 
+ * Copyright (c) 2022, 2026 Eurotech and/or its affiliates and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  *******************************************************************************/
-
 package org.eclipse.kura.linux.position.provider;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-
 import org.eclipse.kura.linux.position.options.PositionServiceOptions;
 import org.eclipse.kura.position.GNSSType;
 import org.eclipse.kura.position.NmeaPosition;
@@ -41,11 +39,12 @@ public interface PositionProvider {
 
     public String getLastSentence();
 
-    public void init(PositionServiceOptions configuration, LockStatusListener gpsDeviceListener,
+    public void init(
+            PositionServiceOptions configuration,
+            LockStatusListener gpsDeviceListener,
             GpsDeviceAvailabilityListener gpsDeviceAvailabilityListener);
 
     public PositionProviderType getType();
 
     public Set<GNSSType> getGnssTypes();
-
 }

@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Eurotech and/or its affiliates and others
- * 
+ * Copyright (c) 2022, 2026 Eurotech and/or its affiliates and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  *******************************************************************************/
@@ -15,7 +15,6 @@ package org.eclipse.kura.linux.position.serial;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
-
 import org.eclipse.kura.comm.CommURI;
 import org.eclipse.kura.linux.position.options.PositionServiceOptions;
 import org.eclipse.kura.linux.position.provider.GpsDeviceAvailabilityListener;
@@ -97,7 +96,9 @@ public class SerialDevicePositionProvider implements PositionProvider {
     }
 
     @Override
-    public void init(PositionServiceOptions configuration, LockStatusListener gpsDeviceListener,
+    public void init(
+            PositionServiceOptions configuration,
+            LockStatusListener gpsDeviceListener,
             GpsDeviceAvailabilityListener gpsDeviceAvailabilityListener) {
 
         this.gpsDeviceTracker.setListener(gpsDeviceAvailabilityListener);
@@ -253,5 +254,4 @@ public class SerialDevicePositionProvider implements PositionProvider {
     public ModemGpsStatusTracker getModemGpsStatusTracker() {
         return this.modemGpsStatusTracker;
     }
-
 }

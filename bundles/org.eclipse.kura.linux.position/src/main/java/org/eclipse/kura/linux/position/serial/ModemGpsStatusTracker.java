@@ -1,16 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2024 Eurotech and/or its affiliates and others
- * 
+ * Copyright (c) 2018, 2026 Eurotech and/or its affiliates and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  *******************************************************************************/
-
 package org.eclipse.kura.linux.position.serial;
 
 import static org.eclipse.kura.net.modem.ModemGpsDisabledEvent.MODEM_EVENT_GPS_DISABLED_TOPIC;
@@ -76,15 +75,18 @@ public class ModemGpsStatusTracker implements EventHandler {
             final int stopBits = (Integer) event.getProperty(ModemGpsEnabledEvent.STOP_BITS);
             final int parity = (Integer) event.getProperty(ModemGpsEnabledEvent.PARITY);
 
-            final CommURI uri = new CommURI.Builder(port).withBaudRate(baudRate).withDataBits(dataBits)
-                    .withStopBits(stopBits).withParity(parity).build();
+            final CommURI uri = new CommURI.Builder(port)
+                    .withBaudRate(baudRate)
+                    .withDataBits(dataBits)
+                    .withStopBits(stopBits)
+                    .withParity(parity)
+                    .build();
 
             this.modemGpsPort = uri;
             notifyGpsAvailabilityChanged();
         } catch (Exception e) {
             logger.warn("Failed to build comm uri from ModemGpsEnabledEvent");
         }
-
     }
 
     private void notifyGpsAvailabilityChanged() {

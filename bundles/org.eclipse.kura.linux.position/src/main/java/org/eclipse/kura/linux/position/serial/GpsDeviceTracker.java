@@ -1,21 +1,19 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2024 Eurotech and/or its affiliates and others
- * 
+ * Copyright (c) 2018, 2026 Eurotech and/or its affiliates and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  *******************************************************************************/
-
 package org.eclipse.kura.linux.position.serial;
 
 import java.io.File;
 import java.util.Optional;
-
 import org.eclipse.kura.comm.CommURI;
 import org.eclipse.kura.linux.position.provider.GpsDeviceAvailabilityListener;
 import org.eclipse.kura.usb.UsbService;
@@ -104,14 +102,19 @@ public class GpsDeviceTracker implements EventHandler {
 
         if (!port.contains("/dev/") && !port.contains("COM")) {
             final Optional<UsbTtyDevice> portDevice = this.usbService.getUsbTtyDevices().stream()
-                    .filter(ttyDev -> ttyDev.getUsbPort().equals(port)).findAny();
+                    .filter(ttyDev -> ttyDev.getUsbPort().equals(port))
+                    .findAny();
             if (portDevice.isPresent()) {
                 actualPort = portDevice.get().getDeviceNode();
             }
         }
 
-        return new CommURI.Builder(actualPort).withBaudRate(uri.getBaudRate()).withDataBits(uri.getDataBits())
-                .withFlowControl(uri.getFlowControl()).withParity(uri.getParity()).withStopBits(uri.getStopBits())
+        return new CommURI.Builder(actualPort)
+                .withBaudRate(uri.getBaudRate())
+                .withDataBits(uri.getDataBits())
+                .withFlowControl(uri.getFlowControl())
+                .withParity(uri.getParity())
+                .withStopBits(uri.getStopBits())
                 .build();
     }
 
@@ -124,5 +127,4 @@ public class GpsDeviceTracker implements EventHandler {
             this.listener.onGpsDeviceAvailabilityChanged();
         }
     }
-
 }

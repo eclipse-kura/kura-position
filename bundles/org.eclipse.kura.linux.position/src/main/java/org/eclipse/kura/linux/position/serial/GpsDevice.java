@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2024 Eurotech and/or its affiliates and others
- * 
+ * Copyright (c) 2011, 2026 Eurotech and/or its affiliates and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  *******************************************************************************/
@@ -17,7 +17,6 @@ import static java.util.Objects.requireNonNull;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.Set;
-
 import org.eclipse.kura.comm.CommConnection;
 import org.eclipse.kura.comm.CommURI;
 import org.eclipse.kura.linux.position.provider.LockStatusListener;
@@ -118,7 +117,8 @@ public class GpsDevice {
 
         public SerialCommunicate(final ConnectionFactory connFactory, final CommURI commURI) throws PositionException {
             try {
-                this.conn = (CommConnection) connFactory.createConnection(enableTimeouts(commURI).toString(), 1, false);
+                this.conn = (CommConnection)
+                        connFactory.createConnection(enableTimeouts(commURI).toString(), 1, false);
                 this.in = new BufferedInputStream(requireNonNull(this.conn.openInputStream()));
             } catch (Exception e) {
                 closeSerialPort();
@@ -245,10 +245,15 @@ public class GpsDevice {
         }
 
         private CommURI enableTimeouts(final CommURI original) {
-            return new CommURI.Builder(original.getPort()).withBaudRate(original.getBaudRate())
-                    .withDataBits(original.getDataBits()).withStopBits(original.getStopBits())
-                    .withFlowControl(original.getFlowControl()).withParity(original.getParity())
-                    .withOpenTimeout(SERIAL_TIMEOUT_MS).withReceiveTimeout(SERIAL_TIMEOUT_MS).build();
+            return new CommURI.Builder(original.getPort())
+                    .withBaudRate(original.getBaudRate())
+                    .withDataBits(original.getDataBits())
+                    .withStopBits(original.getStopBits())
+                    .withFlowControl(original.getFlowControl())
+                    .withParity(original.getParity())
+                    .withOpenTimeout(SERIAL_TIMEOUT_MS)
+                    .withReceiveTimeout(SERIAL_TIMEOUT_MS)
+                    .build();
         }
     }
 

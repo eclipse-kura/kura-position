@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2025 Eurotech and/or its affiliates and others
- * 
+ * Copyright (c) 2011, 2026 Eurotech and/or its affiliates and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  *******************************************************************************/
@@ -19,6 +19,12 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import de.taimos.gpsd4java.backend.GPSdEndpoint;
+import de.taimos.gpsd4java.backend.ResultParser;
+import de.taimos.gpsd4java.types.IGPSObject;
+import de.taimos.gpsd4java.types.ParseException;
+import de.taimos.gpsd4java.types.SKYObject;
+import de.taimos.gpsd4java.types.TPVObject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -27,7 +33,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.kura.core.testutil.TestUtil;
 import org.eclipse.kura.linux.position.gpsd.GpsdPositionProvider;
 import org.eclipse.kura.linux.position.options.PositionServiceOptions;
@@ -37,13 +42,6 @@ import org.junit.Test;
 import org.osgi.util.measurement.Measurement;
 import org.osgi.util.measurement.Unit;
 import org.osgi.util.position.Position;
-
-import de.taimos.gpsd4java.backend.GPSdEndpoint;
-import de.taimos.gpsd4java.backend.ResultParser;
-import de.taimos.gpsd4java.types.IGPSObject;
-import de.taimos.gpsd4java.types.ParseException;
-import de.taimos.gpsd4java.types.SKYObject;
-import de.taimos.gpsd4java.types.TPVObject;
 
 public class UseGpsdPositionProviderTest {
 
@@ -213,7 +211,7 @@ public class UseGpsdPositionProviderTest {
         givenGpsdPositionProvider();
         givenProperties(defaultProperties());
         givenGpsdProviderIsStarted();
-        
+
         whenNMEAStreamArriveFrom(MULTI_DEVICE_JSON_STREAM);
 
         thenPositionIsNotNull();
@@ -225,7 +223,7 @@ public class UseGpsdPositionProviderTest {
         givenGpsdPositionProvider();
         givenProperties(defaultProperties());
         givenGpsdProviderIsStarted();
-        
+
         whenNMEAStreamArriveFrom(MULTI_DEVICE_JSON_STREAM_2);
 
         thenPositionHasZeroValues();
@@ -267,7 +265,6 @@ public class UseGpsdPositionProviderTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void whenGpsdProviderIsStarted() {
@@ -292,8 +289,8 @@ public class UseGpsdPositionProviderTest {
 
     private void thenPositionIs(double latitude, double longitude, double altitude) {
         Position position = this.gpsdPositionProvider.getPosition();
-        assertEquals(latitude, position.getLatitude().getValue() * 180/Math.PI, 0.000001);
-        assertEquals(longitude, position.getLongitude().getValue() * 180/Math.PI, 0.000001);
+        assertEquals(latitude, position.getLatitude().getValue() * 180 / Math.PI, 0.000001);
+        assertEquals(longitude, position.getLongitude().getValue() * 180 / Math.PI, 0.000001);
         assertEquals(altitude, position.getAltitude().getValue(), 0.0001);
     }
 
@@ -364,5 +361,4 @@ public class UseGpsdPositionProviderTest {
         propertiesMap.put("gpsd.port", 2947);
         return propertiesMap;
     }
-
 }

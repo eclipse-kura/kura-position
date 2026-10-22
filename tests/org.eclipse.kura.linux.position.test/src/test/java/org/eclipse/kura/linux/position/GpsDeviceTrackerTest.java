@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2024 Eurotech and/or its affiliates and others
- * 
+ * Copyright (c) 2018, 2026 Eurotech and/or its affiliates and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  *******************************************************************************/
@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.eclipse.kura.comm.CommURI;
 import org.eclipse.kura.linux.position.provider.GpsDeviceAvailabilityListener;
 import org.eclipse.kura.linux.position.serial.GpsDeviceTracker;
@@ -69,8 +68,13 @@ public class GpsDeviceTrackerTest {
     }
 
     private static CommURI getUri(final String port) {
-        return new CommURI.Builder(port).withBaudRate(9600).withDataBits(7).withFlowControl(1).withParity(2)
-                .withStopBits(1).build();
+        return new CommURI.Builder(port)
+                .withBaudRate(9600)
+                .withDataBits(7)
+                .withFlowControl(1)
+                .withParity(2)
+                .withStopBits(1)
+                .build();
     }
 
     @Test
@@ -208,5 +212,4 @@ public class GpsDeviceTrackerTest {
         verify(listener, times(2)).onGpsDeviceAvailabilityChanged();
         assertNull(fixture.tracker.getGpsDeviceUri());
     }
-
 }

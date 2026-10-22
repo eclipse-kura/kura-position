@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2024 Eurotech and/or its affiliates and others
- * 
+ * Copyright (c) 2011, 2026 Eurotech and/or its affiliates and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  *******************************************************************************/
@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.eclipse.kura.position.GNSSType;
 import org.eclipse.kura.position.NmeaPosition;
 import org.osgi.util.measurement.Measurement;
@@ -122,42 +121,41 @@ public class NMEAParser {
 
     /*
      * Also 'GN' is a possible GNSSType, representing the Mixed GNSS System (GPS+GALILEO or GPS+GLONASS for example).
-     * 
+     *
      * But, if the device is capable to emit GN sentences, it must emit also the single-id ones. So we are still able to
      * extract the specific GNSS System. See {@link
      * https://receiverhelp.trimble.com/alloy-gnss/en-us/NMEA-0183messages_GNS.html}
-     * 
+     *
      * As example, if the device emits GN messages due to a GP/GA combination, it will emit three sentences: GN, GP, GA.
-     * 
+     *
      * Info about the correlation GNSS System / NMEA Sentence at
      * {@link https://en.wikipedia.org/wiki/NMEA_0183#NMEA_sentence_format}
-     * 
+     *
      */
     private GNSSType getGnssTypeFromSentenceId(String type) {
 
         switch (type) {
+            case "GP":
+                return GNSSType.GPS;
 
-        case "GP":
-            return GNSSType.GPS;
+            case "BD":
+            case "GB":
+                return GNSSType.BEIDOU;
 
-        case "BD":
-        case "GB":
-            return GNSSType.BEIDOU;
+            case "GA":
+                return GNSSType.GALILEO;
 
-        case "GA":
-            return GNSSType.GALILEO;
+            case "GL":
+                return GNSSType.GLONASS;
 
-        case "GL":
-            return GNSSType.GLONASS;
+            case "GI":
+                return GNSSType.IRNSS;
 
-        case "GI":
-            return GNSSType.IRNSS;
+            case "GQ":
+                return GNSSType.QZSS;
 
-        case "GQ":
-            return GNSSType.QZSS;
-
-        default:
-            return GNSSType.UNKNOWN;
+            default:
+                return GNSSType.UNKNOWN;
         }
     }
 
@@ -419,9 +417,22 @@ public class NMEAParser {
     }
 
     public NmeaPosition getNmeaPosition() {
-        return new NmeaPosition(getLatNmea(), getLongNmea(), getAltNmea(), getSpeedNmea(), getTrackNmea(),
-                getFixQuality(), getNrSatellites(), getDOPNmea(), getPDOPNmea(), getHDOPNmea(), getVDOPNmea(),
-                getFix3DNmea(), getValidFix(), getLatitudeHemisphere(), getLongitudeHemisphere());
+        return new NmeaPosition(
+                getLatNmea(),
+                getLongNmea(),
+                getAltNmea(),
+                getSpeedNmea(),
+                getTrackNmea(),
+                getFixQuality(),
+                getNrSatellites(),
+                getDOPNmea(),
+                getPDOPNmea(),
+                getHDOPNmea(),
+                getVDOPNmea(),
+                getFix3DNmea(),
+                getValidFix(),
+                getLatitudeHemisphere(),
+                getLongitudeHemisphere());
     }
 
     public boolean isValidPosition() {
