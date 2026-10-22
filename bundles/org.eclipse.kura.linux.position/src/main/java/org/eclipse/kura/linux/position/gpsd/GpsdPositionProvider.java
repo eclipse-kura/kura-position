@@ -513,10 +513,10 @@ public class GpsdPositionProvider implements PositionProvider, IObjectListener {
         @Override
         public String toString() {
             return "GpsdInternalState [device=" + device + ", latitude=" + latitude + ", latitudeError=" + latitudeError
-                    + ", longitude="
-                    + longitude + ", longitudeError=" + longitudeError + ", altitude=" + altitude + ", altitudeError="
-                    + altitudeError + ", speed=" + speed + ", speedError=" + speedError + ", course=" + course
-                    + ", courseError=" + courseError + ", timestamp=" + timestamp + ", mode=" + mode + "]";
+                    + ", longitude=" + longitude + ", longitudeError=" + longitudeError + ", altitude=" + altitude
+                    + ", altitudeError=" + altitudeError + ", speed=" + speed + ", speedError=" + speedError
+                    + ", course=" + course + ", courseError=" + courseError + ", timestamp=" + timestamp + ", mode="
+                    + mode + "]";
         }
     }
 }
